@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>رسالة مهمة</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#ff4d6d,#590d22);
+    font-family:Arial, sans-serif;
+    color:white;
+    text-align:center;
+}
+
+.container{
+    z-index:2;
+    width:90%;
+    max-width:500px;
+    position:relative;
+}
+
+h1{
+    font-size:50px;
+    margin-bottom:15px;
+    text-shadow:0 0 15px white;
+}
+
+.hint{
+    font-size:24px;
+    margin-bottom:20px;
+    animation:blink 1.5s infinite;
+}
+
+/* زر JOJO */
+.btn-jojo{
+    display:inline-block;
+    padding:12px 28px;
+    font-size:20px;
+    border-radius:12px;
+    background:rgba(255,255,255,0.15);
+    color:white;
+    border:2px solid rgba(255,255,255,0.25);
+    cursor:pointer;
+    transition:transform .2s, background .2s;
+    margin-bottom:10px;
+    backdrop-filter:blur(6px);
+}
+
+.btn-jojo:hover{
+    transform:translateY(-4px);
+    background:rgba(255,255,255,0.22);
+}
+
+.message{
+    margin-top:15px;
+    background:rgba(255,255,255,0.15);
+    padding:20px;
+    border-radius:20px;
+    line-height:2;
+    font-size:24px;
+    min-height:180px;
+    backdrop-filter:blur(8px);
+    word-break:break-word;
+    /* أهم التعديلات لحل التصاق الحروف */
+    white-space: pre-wrap;      /* يحافظ على الأسطر والفراغات */
+    direction: rtl;             /* اتجاه النص عربي */
+    letter-spacing: 0.6px;      /* تباعد خفيف بين الحروف */
+    -webkit-font-feature-settings: "liga" 0; /* تعطيل بعض اللِّيجاتشر إن لزم */
+    font-variant-ligatures: none;
+    word-spacing: 2px;          /* تباعد بين الكلمات إن احتجت */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* مؤثر الوميض */
+@keyframes blink{
+    50%{
+        opacity:0.4;
+    }
+}
+
+/* القلوب */
+.heart{
+    position:absolute;
+    bottom:-50px;
+    color:#ffccd5;
+    animation:float 6s linear infinite;
+    font-size:25px;
+    pointer-events:none;
+}
+
+@keyframes float{
+    0%{
+        transform:translateY(0) rotate(0deg);
+        opacity:1;
+    }
+    100%{
+        transform:translateY(-120vh) rotate(360deg);
+        opacity:0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>رسالة مهمة ❤️</h1>
+
+    <div class="hint">اضغطي هنا يا حبيبتي 👇</div>
+
+    <button class="btn-jojo" id="jojoBtn">JOJO</button>
+
+    <div class="message" id="message" aria-live="polite"></div>
+
+</div>
+
+<script>
+/* نص الرسالة */
+const text = `يا حبيبتي ❤️
+كل سنه و انتي طيبه و ينعاد علينا و احنا محققين اللي احنا عايزينه وتكوني ف بيتي ان شاء الله
+انتي وحشتيني أوي…
+وحشني كلامنا وضحكتك
+بحبك أوي…
+معرفش اي وصلك لكدا و ليه شلتيني بس انا والله محبتش غيرك ومش عايو غيرك ومش هكلم غيرك ابدا❤️`;
+
+let index = 0;
+let started = false;
+
+const msg = document.getElementById("message");
+const btn = document.getElementById("jojoBtn");
+
+function startMessage(){
+    if(started) return;
+    started = true;
+    btn.disabled = true;
+    btn.style.opacity = "0.6";
+
+    function type(){
+        if(index < text.length){
+            // نستخدم innerText للحفاظ على النص كما هو مع الأسطر
+            msg.innerText += text.charAt(index);
+            index++;
+            setTimeout(type,50);
+        }
+    }
+
+    type();
+}
+
+btn.addEventListener("click", startMessage);
+
+/* إنشاء القلوب */
+function createHeart(){
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerText = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (20 + Math.random()*30) + "px";
+    heart.style.animationDuration = (4 + Math.random()*4) + "s";
+    document.body.appendChild(heart);
+    setTimeout(()=> heart.remove(),8000);
+}
+
+setInterval(createHeart,300);
+</script>
+
+</body>
+</html>
